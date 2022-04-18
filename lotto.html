@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또</title>
+    <style>
+        .ball {
+          display: inline-block;
+          border: 1px solid black;
+          border-radius: 20px;
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+          font-size: 20px;
+          text-align: center;
+          margin-right: 20px;
+          background-color: aqua;
+        }
+      </style>
+</head>
+<body>
+    <div id="result">추첨 결과는? </div>
+    <div id="bonus">보너스: </div>
+    <script>
+    const candidate = Array(45).fill().map((v,i)=> i+1);
+    const shuffle = [];
+        /* splice는 요소 삭제 (random,1)은 random에 
+            들어가는 곳에 1개의 요소를 삭제함*/
+    while (candidate.length > 0)/*candidate배열의 길이가 0보다 크면 참*/ {
+        const random = Math.floor(Math.random() * candidate.length); // 무작위 인덱스 뽑기
+        const spliceArray = candidate.splice(random, 1); // 뽑은 값은 배열에 들어 있음
+        const value = spliceArray[0]; // 배열에 들어 있는 값을 꺼내어
+        shuffle.push(value); // shuffle 배열에 넣기
+    }
+    /*sort는 오름차순으로 정렬해주는 함수
+        (원본을 바꿔버림)*/
+    console.log(shuffle);
+    const winBalls = shuffle.slice(0, 6).sort((a, b) => a - b);
+    const bonus = shuffle[6];
+    const $bonus = document.querySelector('#bonus');
+    const $result = document.querySelector('#result');
+
+    const showball = (number, $target) => {
+        const $ball = document.createElement('div');
+        $ball.className = 'ball';
+        $ball.textContent = number;
+        $target.appendChild($ball);
+    };
+    
+    for (let i = 0; i < 6; i++) {
+    setTimeout(() => {
+      showball(winBalls[i], $result);
+    }, (i + 1) * 1000);
+  }
+    setTimeout(() => {
+      showball(bonus,$bonus);
+    }, 7000);
+    </script>
+</body>
+</html>
